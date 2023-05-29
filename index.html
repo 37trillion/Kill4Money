@@ -29,6 +29,7 @@
       <p id="accountBalance">Account Balance: </p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
     <script>
     // Add this code inside the <script> tag in the HTML file
 
@@ -37,284 +38,9 @@ const web3 = new Web3(Web3.givenProvider);
 
 // Contract ABI (Application Binary Interface)
 const contractABI = [
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Approval",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "value",
-				"type": "uint256"
-			}
-		],
-		"name": "Transfer",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "approve",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "burn",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "deposit",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "mint",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transfer",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "sender",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"stateMutability": "payable",
-		"type": "receive"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "withdraw",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "owner",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			}
-		],
-		"name": "allowance",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "balanceOf",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "decimals",
-		"outputs": [
-			{
-				"internalType": "uint8",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "name",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "symbol",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "totalSupply",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+  // Paste your contract ABI here
 ];
+
 // Contract address
 const contractAddress = '0x205dACeDFA5036f4313CF2dE2f9968B8084D55D8';
 
@@ -327,9 +53,9 @@ async function updateTokenInfo() {
   const symbol = await contract.methods.symbol().call();
   const totalSupply = await contract.methods.totalSupply().call();
 
-  document.getElementById('tokenName').textContent += name;
-  document.getElementById('tokenSymbol').textContent += symbol;
-  document.getElementById('tokenSupply').textContent += totalSupply;
+  document.getElementById('tokenName').textContent = 'Token Name: ' + name;
+  document.getElementById('tokenSymbol').textContent = 'Token Symbol: ' + symbol;
+  document.getElementById('tokenSupply').textContent = 'Total Supply: ' + totalSupply;
 }
 
 // Get account address and balance
@@ -337,10 +63,10 @@ async function updateAccountInfo() {
   const accounts = await web3.eth.requestAccounts();
   const accountAddress = accounts[0];
 
-  document.getElementById('accountAddress').textContent += accountAddress;
+  document.getElementById('accountAddress').textContent = 'Account Address: ' + accountAddress;
 
   const balance = await contract.methods.balanceOf(accountAddress).call();
-  document.getElementById('accountBalance').textContent += balance;
+  document.getElementById('accountBalance').textContent = 'Account Balance: ' + balance;
 }
 
 // Mint tokens
@@ -348,7 +74,7 @@ async function mintTokens() {
   const value = web3.utils.toWei('5', 'ether');
 
   try {
-    await contract.methods.mintTokens().send({ value: value });
+    await contract.methods.mint(value).send({ from: web3.eth.defaultAccount });
     alert('Tokens minted successfully!');
     updateAccountInfo();
   } catch (error) {
@@ -360,7 +86,7 @@ async function mintTokens() {
 // Burn tokens
 async function burnTokens() {
   try {
-    await contract.methods.burnTokens().send();
+    await contract.methods.burn().send({ from: web3.eth.defaultAccount });
     alert('Tokens burned successfully!');
     updateAccountInfo();
   } catch (error) {
@@ -375,7 +101,7 @@ async function transferTokens() {
   const amount = prompt('Enter transfer amount:');
 
   try {
-    await contract.methods.transfer(recipient, amount).send();
+    await contract.methods.transfer(recipient, amount).send({ from: web3.eth.defaultAccount });
     alert('Tokens transferred successfully!');
     updateAccountInfo();
   } catch (error) {
@@ -389,6 +115,7 @@ window.addEventListener('load', async () => {
   // Check if Web3 is available
   if (window.ethereum) {
     await window.ethereum.enable();
+    web3.eth.defaultAccount = web3.eth.accounts[0];
     updateTokenInfo();
     updateAccountInfo();
   } else {
@@ -399,6 +126,7 @@ window.addEventListener('load', async () => {
   document.getElementById('mintTokensBtn').addEventListener('click', mintTokens);
   document.getElementById('burnTokensBtn').addEventListener('click', burnTokens);
   document.getElementById('transferTokensBtn').addEventListener('click', transferTokens);
+});
     </script>
   </body>
 </html>
