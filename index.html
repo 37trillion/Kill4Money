@@ -30,7 +30,101 @@
     </div>
 
     <script>
-      // Add your JavaScript code here
+    // Add this code inside the <script> tag in the HTML file
+
+// Connect to the Ethereum network using Web3
+const web3 = new Web3(Web3.givenProvider);
+
+// Contract ABI (Application Binary Interface)
+const contractABI = [
+  // Add the ABI of your "Kill 4 Money" token contract here
+  // It should include the ABI of the ERC20 interface
+];
+
+// Contract address
+const contractAddress = '0x205dACeDFA5036f4313CF2dE2f9968B8084D55D8';
+
+// Contract instance
+const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+// Get token information and update UI
+async function updateTokenInfo() {
+  const name = await contract.methods.name().call();
+  const symbol = await contract.methods.symbol().call();
+  const totalSupply = await contract.methods.totalSupply().call();
+
+  document.getElementById('tokenName').textContent += name;
+  document.getElementById('tokenSymbol').textContent += symbol;
+  document.getElementById('tokenSupply').textContent += totalSupply;
+}
+
+// Get account address and balance
+async function updateAccountInfo() {
+  const accounts = await web3.eth.requestAccounts();
+  const accountAddress = accounts[0];
+
+  document.getElementById('accountAddress').textContent += accountAddress;
+
+  const balance = await contract.methods.balanceOf(accountAddress).call();
+  document.getElementById('accountBalance').textContent += balance;
+}
+
+// Mint tokens
+async function mintTokens() {
+  const value = web3.utils.toWei('5', 'ether');
+
+  try {
+    await contract.methods.mintTokens().send({ value: value });
+    alert('Tokens minted successfully!');
+    updateAccountInfo();
+  } catch (error) {
+    console.error(error);
+    alert('Failed to mint tokens.');
+  }
+}
+
+// Burn tokens
+async function burnTokens() {
+  try {
+    await contract.methods.burnTokens().send();
+    alert('Tokens burned successfully!');
+    updateAccountInfo();
+  } catch (error) {
+    console.error(error);
+    alert('Failed to burn tokens.');
+  }
+}
+
+// Transfer tokens
+async function transferTokens() {
+  const recipient = prompt('Enter recipient address:');
+  const amount = prompt('Enter transfer amount:');
+
+  try {
+    await contract.methods.transfer(recipient, amount).send();
+    alert('Tokens transferred successfully!');
+    updateAccountInfo();
+  } catch (error) {
+    console.error(error);
+    alert('Failed to transfer tokens.');
+  }
+}
+
+// Trigger functions when the page is loaded
+window.addEventListener('load', async () => {
+  // Check if Web3 is available
+  if (window.ethereum) {
+    await window.ethereum.enable();
+    updateTokenInfo();
+    updateAccountInfo();
+  } else {
+    alert('Please install MetaMask to use this DApp.');
+  }
+  
+  // Button event listeners
+  document.getElementById('mintTokensBtn').addEventListener('click', mintTokens);
+  document.getElementById('burnTokensBtn').addEventListener('click', burnTokens);
+  document.getElementById('transferTokensBtn').addEventListener('click', transferTokens);
     </script>
   </body>
 </html>
